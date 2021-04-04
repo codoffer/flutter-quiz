@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _currentQuestIndex = 0;
 
-  final questions = const [
+  final _questions = const [
     {
       'questionText': 'What is your name?',
       'answers': ['John', 'Bob', 'Ram']
@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   ];
 
   void _chooseOption() {
+    if (_currentQuestIndex < _questions.length) {}
     setState(() {
       _currentQuestIndex++;
     });
@@ -44,15 +45,13 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: Text('My First App'),
       ),
-      body: Column(
-        children: [
-          Question(questions[_currentQuestIndex]['questionText']),
-          ...(questions[_currentQuestIndex]['answers'] as List<String>)
-              .map((answer) {
-            return Answer(_chooseOption, answer);
-          }).toList(),
-        ],
-      ),
+      body: _currentQuestIndex < _questions.length
+          ? Quiz(
+              questions: _questions,
+              currentQuestIndex: _currentQuestIndex,
+              chooseOption: _chooseOption,
+            )
+          : Result(),
     ));
   }
 }
